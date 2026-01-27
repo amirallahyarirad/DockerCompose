@@ -1,0 +1,155 @@
+.:53 {
+
+    template ANY A {
+      answer "{{ .Name }} 60 IN A [HOST_IP]"
+    }
+
+#    template ANY AAAA {
+#      answer "{{ .Name }} 1 IN AAAA 2a0c:6600:1:0:250:56ff:fe85"
+#    }
+
+    forward . 8.8.8.8
+    log
+    errors
+    reload
+    ready
+}
+
+ubuntu.com:53 {
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+canonical.com:53 {
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+debian.org:53
+{
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+alpinelinux.org:53
+{
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+ntp.ubuntu.com:53 {
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+ifconfig.io:53
+{
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+github.com:53
+{
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+downloads.sentry-cdn.com:53
+{
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+sentry-cdn.com:53
+{
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+nodejs.org:53 {
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+npmjs.org:53 {
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+bpm.shaparak.ir:53
+{
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+api.kavenegar.com:53
+{
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
+
+hamrah.in:53
+{
+    forward . 172.16.151.248 
+    log
+    errors
+    reload
+    ready
+}
+
+teleport.hamrah.in:53
+{
+    forward . 172.16.151.248
+    log
+    errors
+    reload
+    ready
+}
+
+enamad.ir:53
+{
+    forward . 8.8.8.8 9.9.9.9
+    log
+    errors
+    reload
+    ready
+}
