@@ -1,0 +1,71 @@
+services: 
+  nextcloud: 
+    image: nextcloud
+    container_name: nextcloud-app
+    restart: unless-stopped 
+    depends_on: 
+      - nextclouddb
+      - redis
+    ports: 
+      - 8081:80 
+    volumes: 
+      - nextcloud-html:/var/www/html
+      - nextcloud-apps:/var/www/html/custom_apps
+      - ./config:/var/www/html/config
+      - nextcloud-data:/var/www/html/data
+    environment: 
+      - TZ=Asia/Tehran
+      - MYSQL_DATABASE=nextcloud 
+      - MYSQL_USER=nextcloud 
+      - MYSQL_PASSWORD=dbpassword 
+      - MYSQL_HOST=nextclouddb
+      - REDIS_HOST=redis 
+    networks:  
+      - nextcloud-net 
+
+  nextclouddb: 
+    image: mariadb 
+    container_name: nextcloud-db 
+    restart: unless-stopped 
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW 
+    volumes: 
+      - nextcloud-db:/var/lib/mysql 
+    environment: 
+      - TZ=Asia/Tehran
+      - MYSQL_ROOT_PASSWORD=Password 
+      - MYSQL_PASSWORD=dbpassword 
+      - MYSQL_DATABASE=nextcloud 
+      - MYSQL_USER=nextcloud
+    networks:  
+      - nextcloud-net
+
+  redis: 
+    #image: redis:8.2.2-alpine3.22
+    image: redis:alpine 
+    container_name: nextcloud-redis 
+    volumes: 
+      - ./redis:/data   
+    networks:  
+      - nextcloud-net
+
+networks: 
+  nextcloud-net:
+    name: nextcloud-net
+    driver: bridge
+
+volumes:
+  nextcloud-data:
+    external: true
+    name: nextcloud-data
+  nextcloud-db:
+    external: true
+    name: nextcloud-db
+  nextcloud-apps:
+    external: true
+    name: nextcloud-apps
+  nextcloud-config:
+    external: true
+    name: nextcloud-config
+  nextcloud-html:
+    external: true
+    
