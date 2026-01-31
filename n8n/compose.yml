@@ -7,7 +7,12 @@ services:
       - "5678:5678"   # n8n web interface
     environment:
       # Basic Auth for security
-      - N8N_BASIC_AUTH_ACTIVE=true
+      # To set Basic Auth OFF
+      - N8N_BASIC_AUTH_ACTIVE=false
+            
+      # User Management ON
+      - N8N_USER_MANAGEMENT_DISABLED=false
+      
       - N8N_BASIC_AUTH_USER=admin
       - N8N_BASIC_AUTH_PASSWORD=password
 
