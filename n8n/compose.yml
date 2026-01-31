@@ -1,0 +1,33 @@
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"   # n8n web interface
+    environment:
+      # Basic Auth for security
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=password
+
+      - N8N_PROTOCOL=https
+      - N8N_HOST=n8n.domain.com
+      - WEBHOOK_URL=https://n8n.domain.com
+
+      # Execution data pruning to save disk space
+      - EXECUTIONS_DATA_PRUNE=true
+      - EXECUTIONS_DATA_MAX_AGE=168  # keep 7 days
+      - EXECUTIONS_DATA_SAVE_ON_SUCCESS=false
+      - EXECUTIONS_DATA_SAVE_ON_ERROR=true
+      - EXECUTIONS_DATA_SAVE_ON_PROGRESS=false
+
+      # GitLab API base URL
+      - N8N_GITLAB_BASE_URL=https://git.domain.com
+      # Optional: GitLab personal access token as a credential
+      - N8N_GITLAB_ACCESS_TOKEN=YOUR_GITLAB_TOKEN
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  n8n_data:
