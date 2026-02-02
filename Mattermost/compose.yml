@@ -1,0 +1,52 @@
+services:
+  mattermost:
+    image: mattermost/mattermost-team-edition:latest
+    container_name: mattermost
+    restart: always
+    environment:
+      MM_DB_DRIVER: postgres
+      MM_DB_HOST: 1.1.1.1:5432
+      MM_DB_NAME: mattermost-db
+      MM_DB_USER: mattermost-user
+      MM_DB_PASSWORD: 'mattermost-P@ssword'
+      MM_SQLSETTINGS_DRIVER: postgres
+      MM_SQLSETTINGS_HOST: 150.60.60.2:5432
+      MM_SQLSETTINGS_PORT: 5432
+      MM_SQLSETTINGS_USERNAME: mattermost-user
+      MM_SQLSETTINGS_PASSWORD: 'mattermost-P@ssword'
+    ports:
+      - "8065:8065"
+    volumes:
+      - mattermost-data:/mattermost/data
+      - mattermost-config:/mattermost/config
+    networks:
+      - confluence-net
+
+  jitsi-meet:
+    image: jitsi/web:latest
+    container_name: jitsi
+    restart: always
+    environment:
+      - ENABLE_AUTH=1
+      - ENABLE_GUESTS=1
+      - JICOFO_AUTH_PASSWORD=Jitsi_P@ssword
+      - JVB_AUTH_PASSWORD=Jitsi_P@ssword
+      - JITSI_MEET_DOMAIN=mattermost.domain.com
+      - TZ=Asia/Tehran
+    ports:
+      - "8001:80"
+      - "4443:443"
+    volumes:
+      - jitsi-data:/config
+    networks:
+      - confluence-net
+
+volumes:
+  mattermost-data:
+  mattermost-config:
+  jitsi-data:
+
+networks:
+  confluence-net:
+    external: true
+

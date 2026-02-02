@@ -1,0 +1,68 @@
+version: '3.5'
+services:
+  zabbix-server:
+    image: zabbix/zabbix-server-mysql:latest
+    container_name: zabbix-server
+    restart: unless-stopped
+    extra_hosts:
+      - "mail.domain.com:1.1.1.1"
+    ports:
+      - "10051:10051"
+    environment:
+      DB_SERVER_HOST: zabbix-mysql
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix-password
+      MYSQL_ROOT_PASSWORD: root-password
+    volumes:
+      - zabbix-server-config:/etc/zabbix
+      - zabbix-server-export:/var/lib/zabbix/export
+    depends_on:
+      - zabbix-mysql
+    networks:
+      - zabbix-net
+
+  zabbix-mysql:
+    image: mysql:8.0
+    container_name: zabbix-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix-password
+      MYSQL_ROOT_PASSWORD: root-password
+    command: --character-set-server=utf8 --collation-server=utf8_bin
+    volumes:
+      - zabbix-mysql-data:/var/lib/mysql
+    networks:
+      - zabbix-net
+
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-mysql:latest
+    container_name: zabbix-web
+    restart: unless-stopped
+    ports:
+      - "8282:8080"
+    environment:
+      DB_SERVER_HOST: zabbix-mysql
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix-password
+      MYSQL_ROOT_PASSWORD: root-password
+      ZBX_SERVER_HOST: zabbix-server
+      ZBX_SERVER_PORT: 10051
+      PHP_TZ: "Asia/Tehran"
+    depends_on:
+      - zabbix-server
+      - zabbix-mysql
+    networks:
+      - zabbix-net
+
+networks:
+  zabbix-net:
+    driver: bridge
+
+volumes:
+  zabbix-server-config:
+  zabbix-server-export:
+  zabbix-mysql-data:
