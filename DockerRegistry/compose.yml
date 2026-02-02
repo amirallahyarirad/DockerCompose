@@ -1,0 +1,28 @@
+services:
+  registry:
+    image: registry:2
+    container_name: docker_registry
+    ports:
+      - "5000:5000"
+    environment:
+      REGISTRY_HTTP_TLS_CERTIFICATE: ssl/registry.domain.com.pem
+      REGISTRY_HTTP_TLS_KEY: ssl/registry.domain.com.key
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_PATH: ./auth/htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
+      REGISTRY_HTTP_ADDR: 0.0.0.0:5000
+    volumes:
+      - registry_data:/var/lib/registry    # Volume for registry data
+      - registry_config:/etc/docker/registry # Volume for custom configuration
+      - /opt/docker-registry/certs:/certs # Mount certificates
+      - ./auth:/auth # Mount the authentication file
+
+
+    restart: always
+
+volumes:
+  registry_data:
+    driver: local
+  registry_config:
+    driver: local
