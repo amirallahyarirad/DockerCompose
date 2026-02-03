@@ -1,7 +1,12 @@
 services:
   excalidraw:
-    container_name: excalidraw
     image: excalidraw/excalidraw:latest
+    container_name: excalidraw
     ports:
-      - "3030:80"
-    restart: on-failure
+      - "3000:80"
+    volumes:
+      - excalidraw-data:/usr/share/nginx/html   # future data storage
+    restart: unless-stopped
+
+volumes:
+  excalidraw-data:
