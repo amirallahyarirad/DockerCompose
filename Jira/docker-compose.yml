@@ -12,7 +12,7 @@ services:
     environment:
       - ATL_JDBC_URL=jdbc:postgresql://db:5432/jiradb
       - ATL_JDBC_USER=jiradbuser
-      - ATL_JDBC_PASSWORD=mojtaba1369
+      - ATL_JDBC_PASSWORD=password
       - ATL_DB_TYPE=postgres72
       - ATL_JIRA_HOME=/var/atlassian/application-data/jira
 
@@ -22,13 +22,13 @@ services:
       - db
 
   db:
-    image: postgres:13
-    container_name: jira_postgres
+    image: postgres:17
+    container_name: jira-db
     restart: unless-stopped
     environment:
       POSTGRES_DB: jiradb
       POSTGRES_USER: jiradbuser
-      POSTGRES_PASSWORD: mojtaba1369
+      POSTGRES_PASSWORD: password
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
     volumes:
@@ -38,11 +38,9 @@ services:
 
 volumes:
   New_jira_data:
-    external: true
   New_postgres_data:
-    external: true
 
 networks:
   jira-network:
-  #  external: true
+
 
